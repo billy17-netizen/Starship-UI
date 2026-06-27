@@ -9118,7 +9118,8 @@ function Library:CreateWindow(WindowInfo)
 
             do
                 GroupboxHolder = New("Frame", {
-                    BackgroundColor3 = "MainColor", -- Berubah menjadi Card Style (Lebih terang dari background)
+                    BackgroundColor3 = "MainColor", 
+                    AutomaticSize = Enum.AutomaticSize.Y, -- Gunakan auto size
                     Size = UDim2.fromScale(1, 0),
                     Parent = BoxHolder,
                 })
@@ -9243,14 +9244,7 @@ function Library:CreateWindow(WindowInfo)
             }
 
             function Groupbox:Resize()
-                if Collapsed then
-                    GroupboxHolder.Size = UDim2.new(1, 0, 0, 34)
-                else
-                    -- Menunggu roblox update layout
-                    task.defer(function()
-                        GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
-                    end)
-                end
+                -- Kosong karena sekarang menggunakan AutomaticSize murni
             end
 
             ToggleCollapseCallback = function()
