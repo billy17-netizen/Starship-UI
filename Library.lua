@@ -8465,10 +8465,6 @@ function Library:CreateWindow(WindowInfo)
         end
 
         --// Custom Layout Restructuring (Mac-style) \\--
-        
-        -- Kembalikan posisi Tabs agar mengisi sidebar dengan penuh (tanpa terpotong oleh kotak profil/search di bawah)
-        Tabs.Position = UDim2.fromOffset(0, 49)
-        Tabs.Size = UDim2.new(0, InitialLeftWidth, 1, -70)
 
         -- Biarkan SearchBox di posisi aslinya yaitu di Header Kanan (RightWrapper)
 
