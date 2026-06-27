@@ -8472,25 +8472,46 @@ function Library:CreateWindow(WindowInfo)
 
         -- Pindahkan SearchBox ke Sidebar Kiri (bawah titik macOS)
         SearchBox.Parent = MainFrame
+        SearchBox.BackgroundTransparency = 1
         SearchBox.Size = UDim2.new(0, InitialLeftWidth - 24, 0, 32)
         SearchBox.Position = UDim2.fromOffset(12, 49)
         SearchBox.AnchorPoint = Vector2.zero
+        
+        -- Hapus outline agar menyatu dan perbaiki tata letak icon
+        for _, v in SearchBox:GetChildren() do
+            if v:IsA("UIStroke") then
+                v:Destroy()
+            end
+            if v:IsA("ImageLabel") then
+                v.AnchorPoint = Vector2.new(0, 0.5)
+                v.Position = UDim2.new(0, 0, 0.5, 0)
+                v.Size = UDim2.fromScale(0.5, 0.5)
+            end
+            if v:IsA("UIPadding") then
+                v.PaddingLeft = UDim.new(0, 24)
+                v.PaddingTop = UDim.new(0, 0)
+                v.PaddingBottom = UDim.new(0, 0)
+            end
+        end
 
         -- Tambahkan Profil User di bawah Sidebar Kiri
         local Players = game:GetService("Players")
         local LocalPlayer = Players.LocalPlayer
 
         local ProfileBox = New("Frame", {
-            BackgroundColor3 = "MainColor",
+            BackgroundTransparency = 1,
             Position = UDim2.new(0, 12, 1, -20 - WindowInfo.CornerRadius - 48),
             Size = UDim2.new(0, InitialLeftWidth - 24, 0, 48),
             Parent = MainFrame,
         })
-        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = ProfileBox }))
-        New("UIStroke", { Color = "OutlineColor", Parent = ProfileBox })
+        
+        local success, avatarUrl = pcall(function()
+            return Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
+        end)
 
         local ProfileAvatar = New("ImageLabel", {
             BackgroundColor3 = "OutlineColor",
+            Image = success and avatarUrl or "",
             Position = UDim2.new(0, 8, 0.5, 0),
             AnchorPoint = Vector2.new(0, 0.5),
             Size = UDim2.fromOffset(32, 32),
