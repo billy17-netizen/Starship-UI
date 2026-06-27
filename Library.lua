@@ -10767,11 +10767,11 @@ function Library:CreateWindow(WindowInfo)
     local UIGlow = New("ImageLabel", {
         Name = "UIGlow",
         BackgroundTransparency = 1,
-        Image = "rbxassetid://5028857084",
+        Image = "rbxassetid://6015897723",
         ImageColor3 = Library.Scheme.AccentColor,
-        ImageTransparency = 0,
+        ImageTransparency = 0.3,
         ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(24, 24, 276, 276),
+        SliceCenter = Rect.new(12, 12, 12, 12),
         ZIndex = 0,
         Visible = false,
         Parent = ScreenGui
@@ -10779,14 +10779,14 @@ function Library:CreateWindow(WindowInfo)
     Library.Registry[UIGlow] = { ImageColor3 = "AccentColor" }
 
     local function SyncGlow()
-        -- Kita buat ukurannya melebar 30 pixel di setiap sisi agar pancarannya tebal dan halus
+        -- Offset +30 dan Position -15 memastikan glow merapat sempurna ke tepi window (tanpa gap melayang)
         UIGlow.Size = UDim2.new(
-            MainFrame.Size.X.Scale, MainFrame.Size.X.Offset + 60,
-            MainFrame.Size.Y.Scale, MainFrame.Size.Y.Offset + 60
+            MainFrame.Size.X.Scale, MainFrame.Size.X.Offset + 30,
+            MainFrame.Size.Y.Scale, MainFrame.Size.Y.Offset + 30
         )
         UIGlow.Position = UDim2.new(
-            MainFrame.Position.X.Scale, MainFrame.Position.X.Offset - 30,
-            MainFrame.Position.Y.Scale, MainFrame.Position.Y.Offset - 30
+            MainFrame.Position.X.Scale, MainFrame.Position.X.Offset - 15,
+            MainFrame.Position.Y.Scale, MainFrame.Position.Y.Offset - 15
         )
     end
     Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Position"):Connect(SyncGlow))
