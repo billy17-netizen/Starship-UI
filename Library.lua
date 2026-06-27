@@ -8466,46 +8466,22 @@ function Library:CreateWindow(WindowInfo)
 
         --// Custom Layout Restructuring (Mac-style) \\--
         
-        -- Pindahkan Title & Icon ke Header Kanan
-        WindowIcon.Parent = RightWrapper
-        WindowTitle.Parent = RightWrapper
+        -- Kembalikan posisi Tabs agar mengisi sidebar dengan penuh (tanpa terpotong oleh kotak profil/search di bawah)
+        Tabs.Position = UDim2.fromOffset(0, 49)
+        Tabs.Size = UDim2.new(0, InitialLeftWidth, 1, -70)
 
-        -- Pindahkan SearchBox ke Sidebar Kiri (bawah titik macOS)
-        SearchBox.Parent = MainFrame
-        SearchBox.BackgroundTransparency = 0
-        SearchBox.BackgroundColor3 = Library.Scheme.MainColor
-        if Library.Registry[SearchBox] then
-            Library.Registry[SearchBox].BackgroundColor3 = "MainColor"
-        end
-        SearchBox.Size = UDim2.new(0, InitialLeftWidth - 28, 0, 28)
-        SearchBox.Position = UDim2.fromOffset(14, 49)
-        SearchBox.AnchorPoint = Vector2.zero
-        
-        -- Perbaiki tata letak icon dan padding tanpa menghapus outline
-        for _, v in SearchBox:GetChildren() do
-            if v:IsA("ImageLabel") then
-                v.AnchorPoint = Vector2.new(0, 0.5)
-                v.Position = UDim2.new(0, 8, 0.5, 0)
-                v.SizeConstraint = Enum.SizeConstraint.RelativeXY
-                v.Size = UDim2.fromOffset(16, 16)
-            end
-            if v:IsA("UIPadding") then
-                v.PaddingLeft = UDim.new(0, 32)
-                v.PaddingTop = UDim.new(0, 0)
-                v.PaddingBottom = UDim.new(0, 0)
-            end
-        end
+        -- Biarkan SearchBox di posisi aslinya yaitu di Header Kanan (RightWrapper)
 
-        -- Tambahkan Profil User di bawah Sidebar Kiri
+        -- Tambahkan Profil User di TopBar Kanan (RightWrapper) mendampingi SearchBox
         local Players = game:GetService("Players")
         local LocalPlayer = Players.LocalPlayer
 
         local ProfileBox = New("Frame", {
             BackgroundColor3 = "MainColor",
             BackgroundTransparency = 0,
-            Position = UDim2.new(0, 14, 1, -20 - WindowInfo.CornerRadius - 48),
-            Size = UDim2.new(0, InitialLeftWidth - 28, 0, 48),
-            Parent = MainFrame,
+            Size = UDim2.new(0, 160, 1, 0), -- Mengisi penuh tinggi RightWrapper
+            Parent = RightWrapper,
+            LayoutOrder = 99 -- Taruh di ujung paling kanan setelah SearchBox
         })
         table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = ProfileBox }))
         New("UIStroke", { Color = "OutlineColor", Parent = ProfileBox })
@@ -8519,18 +8495,18 @@ function Library:CreateWindow(WindowInfo)
             Image = success and avatarUrl or "",
             Position = UDim2.new(0, 8, 0.5, 0),
             AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.fromOffset(32, 32),
+            Size = UDim2.fromOffset(24, 24),
             Parent = ProfileBox,
         })
         New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ProfileAvatar })
 
         local ProfileName = New("TextLabel", {
             BackgroundTransparency = 1,
-            Position = UDim2.new(0, 48, 0.5, -8),
+            Position = UDim2.new(0, 40, 0.5, -6),
             AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.new(1, -56, 0, 16),
+            Size = UDim2.new(1, -48, 0, 12),
             Text = LocalPlayer and LocalPlayer.Name or "User",
-            TextSize = 14,
+            TextSize = 12,
             TextColor3 = "FontColor",
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = ProfileBox,
@@ -8538,11 +8514,11 @@ function Library:CreateWindow(WindowInfo)
 
         local ProfileRole = New("TextLabel", {
             BackgroundTransparency = 1,
-            Position = UDim2.new(0, 48, 0.5, 8),
+            Position = UDim2.new(0, 40, 0.5, 6),
             AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.new(1, -56, 0, 16),
+            Size = UDim2.new(1, -48, 0, 12),
             Text = "Premium User",
-            TextSize = 12,
+            TextSize = 10,
             TextColor3 = "FontColor",
             TextTransparency = 0.5,
             TextXAlignment = Enum.TextXAlignment.Left,
@@ -8625,9 +8601,9 @@ function Library:CreateWindow(WindowInfo)
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             BackgroundColor3 = "BackgroundColor",
             CanvasSize = UDim2.fromScale(0, 0),
-            Position = UDim2.fromOffset(0, 49 + 28 + 14), -- Posisi di bawah SearchBox yang sudah disesuaikan
+            Position = UDim2.fromOffset(0, 49),
             ScrollBarThickness = 0,
-            Size = UDim2.new(0, InitialLeftWidth, 1, -70 - 28 - 14 - 48 - 14),
+            Size = UDim2.new(0, InitialLeftWidth, 1, -70),
             Parent = MainFrame,
         })
         New("UIListLayout", {
