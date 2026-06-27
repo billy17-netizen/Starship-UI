@@ -7374,7 +7374,11 @@ do
                 if ButtonIcon then
                     ButtonIcon.ImageTransparency = 0
                 end
-                Line.Visible = false
+                
+                -- Ubah garis bawah menjadi warna Accent (aktif)
+                Line.Visible = true
+                Library.Registry[Line].BackgroundColor3 = "AccentColor"
+                Line.BackgroundColor3 = Library.Scheme.AccentColor
 
                 TabContainer.Visible = true
 
@@ -7389,7 +7393,11 @@ do
                 if ButtonIcon then
                     ButtonIcon.ImageTransparency = 0.5
                 end
+                
+                -- Kembalikan garis bawah menjadi warna Outline biasa
                 Line.Visible = true
+                Library.Registry[Line].BackgroundColor3 = "OutlineColor"
+                Line.BackgroundColor3 = Library.Scheme.OutlineColor
 
                 TabContainer.Visible = false
             end
