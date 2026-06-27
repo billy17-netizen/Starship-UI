@@ -3,9 +3,10 @@
 -- You can suggest changes with a pull request or something
 
 local repo = "https://raw.githubusercontent.com/billy17-netizen/Starship-UI/main/"
-local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
-local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
-local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+local function get_url(file) return game:HttpGet(repo .. file .. "?t=" .. tostring(os.time())) end
+local Library = loadstring(get_url("Library.lua"))()
+local ThemeManager = loadstring(get_url("addons/ThemeManager.lua"))()
+local SaveManager = loadstring(get_url("addons/SaveManager.lua"))()
 
 local Options = Library.Options
 local Toggles = Library.Toggles
