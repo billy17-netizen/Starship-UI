@@ -65,6 +65,30 @@ UISettingsTab:UpdateWarningBox({
 -- except Tabboxes you have to call the functions on a tab (Tabbox:AddTab(Name))
 local LeftGroupBox = Tabs.Main:AddLeftGroupbox("Groupbox", "boxes")
 
+-- ==========================================
+-- CONTOH TABBOX DENGAN ICON & DIVIDER TEKS (Sesuai Referensi)
+-- ==========================================
+local MiningGroup = Tabs.Main:AddRightGroupbox("Mining", "pickaxe")
+
+local MiningTabbox = Tabs.Main:AddRightTabbox()
+-- AddTab(Nama, Icon). Jika nama dikosongkan (""), ia akan hanya menampilkan icon di tengah tab!
+local TabPickaxe = MiningTabbox:AddTab("", "pickaxe")
+local TabSettings = MiningTabbox:AddTab("", "settings")
+local TabPlay = MiningTabbox:AddTab("", "play")
+local TabMap = MiningTabbox:AddTab("", "map-pin")
+local TabEye = MiningTabbox:AddTab("", "eye")
+
+TabPickaxe:AddToggle("AutoMine", { Text = "Auto Mine", Default = false })
+TabPickaxe:AddToggle("AutoEquip", { Text = "Auto Equip Pickaxe", Default = true })
+
+-- Divider dengan teks di tengah
+TabPickaxe:AddDivider({ Text = "Rock Priority", MarginTop = 8, MarginBottom = 8 })
+
+TabPickaxe:AddDropdown("Priority1", { Values = {"---", "Diamond", "Gold"}, Default = 1, Text = "1st Priority:" })
+TabPickaxe:AddDropdown("Priority2", { Values = {"---", "Diamond", "Gold"}, Default = 1, Text = "2nd Priority:" })
+TabPickaxe:AddDropdown("OtherRocks", { Values = {"---", "Coal", "Stone"}, Default = 1, Text = "Other Rocks:" })
+-- ==========================================
+
 -- We can also get our Main tab via the following code:
 -- local LeftGroupBox = Window.Tabs.Main:AddLeftGroupbox("Groupbox", "boxes")
 
