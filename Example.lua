@@ -70,7 +70,7 @@ local LeftGroupBox = Tabs.Main:AddLeftGroupbox("Groupbox", "boxes")
 -- ==========================================
 local MiningGroup = Tabs.Main:AddRightGroupbox("Mining", "pickaxe")
 
-local MiningTabbox = Tabs.Main:AddRightTabbox()
+local MiningTabbox = MiningGroup:AddTabbox()
 -- AddTab(Nama, Icon). Jika nama dikosongkan (""), ia akan hanya menampilkan icon di tengah tab!
 local TabPickaxe = MiningTabbox:AddTab("", "pickaxe")
 local TabSettings = MiningTabbox:AddTab("", "settings")
