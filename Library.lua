@@ -9194,15 +9194,15 @@ function Library:CreateWindow(WindowInfo)
                 })
 
                 local Collapsed = false
+
+
+
+                -- Akan didefinisikan nanti karena butuh Groupbox:Resize()
+                local ToggleCollapseCallback = nil
+                
                 local function ToggleCollapse()
-                    Collapsed = not Collapsed
-                    GroupboxContainer.Visible = not Collapsed
-                    
-                    local NewIcon = Collapsed and Library:GetIcon("chevron-up") or Library:GetIcon("chevron-down")
-                    if NewIcon then
-                        ChevronButton.Image = NewIcon.Url
-                        ChevronButton.ImageRectOffset = NewIcon.ImageRectOffset
-                        ChevronButton.ImageRectSize = NewIcon.ImageRectSize
+                    if ToggleCollapseCallback then
+                        ToggleCollapseCallback()
                     end
                 end
                 
@@ -9243,7 +9243,28 @@ function Library:CreateWindow(WindowInfo)
             }
 
             function Groupbox:Resize()
-                GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
+                if Collapsed then
+                    GroupboxHolder.Size = UDim2.new(1, 0, 0, 34)
+                else
+                    -- Menunggu roblox update layout
+                    task.defer(function()
+                        GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
+                    end)
+                end
+            end
+
+            ToggleCollapseCallback = function()
+                Collapsed = not Collapsed
+                GroupboxContainer.Visible = not Collapsed
+                
+                local NewIcon = Collapsed and Library:GetIcon("chevron-up") or Library:GetIcon("chevron-down")
+                if NewIcon then
+                    ChevronButton.Image = NewIcon.Url
+                    ChevronButton.ImageRectOffset = NewIcon.ImageRectOffset
+                    ChevronButton.ImageRectSize = NewIcon.ImageRectSize
+                end
+                
+                Groupbox:Resize()
             end
 
             function Groupbox:Destroy()
