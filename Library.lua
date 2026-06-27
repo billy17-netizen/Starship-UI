@@ -9187,8 +9187,9 @@ function Library:CreateWindow(WindowInfo)
 
                 GroupboxContainer = New("Frame", {
                     BackgroundTransparency = 1,
+                    AutomaticSize = Enum.AutomaticSize.Y, -- PENTING: Agar ukurannya merenggang otomatis mengikuti isinya (seperti Tabbox)
                     Position = UDim2.fromOffset(0, 35),
-                    Size = UDim2.new(1, 0, 1, -35),
+                    Size = UDim2.new(1, 0, 0, 0),
                     Parent = GroupboxHolder,
                 })
 
