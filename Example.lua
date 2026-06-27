@@ -48,19 +48,7 @@ local Tabs = {
 	Settings = Window:AddTab("Settings", "settings"),
 }
 
-local UIConfig = Tabs.Settings:AddLeftGroupbox("UI Configuration")
-UIConfig:AddToggle("UIGlowToggle", {
-    Text = "Enable UI Glow",
-    Default = true,
-    Tooltip = "Menyalakan efek cahaya di belakang window utama",
-    Callback = function(Value)
-        Window:StartGlowingAuraAroundTheParameterOfTheWindow(Value, {
-            color = "AccentColor",
-            transparency = 0.1,
-            thickness = 2
-        })
-    end
-})
+
 
 
 --[[
@@ -735,6 +723,18 @@ MenuGroup:AddToggle("ShowCustomCursor", {
 	Callback = function(Value)
 		Library.ShowCustomCursor = Value
 	end,
+})
+MenuGroup:AddToggle("UIGlowToggle", {
+    Text = "Enable UI Glow",
+    Default = true,
+    Tooltip = "Menyalakan efek cahaya di sekeliling window utama",
+    Callback = function(Value)
+        Window:StartGlowingAuraAroundTheParameterOfTheWindow(Value, {
+            color = "AccentColor",
+            transparency = 0.1,
+            thickness = 2
+        })
+    end
 })
 MenuGroup:AddDropdown("NotificationSide", {
 	Values = { "Left", "Right" },
