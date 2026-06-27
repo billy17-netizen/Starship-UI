@@ -8403,58 +8403,70 @@ function Library:CreateWindow(WindowInfo)
 
         -- Biarkan SearchBox di posisi aslinya yaitu di Header Kanan (RightWrapper)
 
-        -- Tambahkan Profil User di TopBar Kanan (RightWrapper) mendampingi SearchBox
-        local Players = game:GetService("Players")
-        local LocalPlayer = Players.LocalPlayer
-
-        local ProfileBox = New("Frame", {
+        -- Tambahkan Maximize Button di TopBar Kanan mendampingi SearchBox
+        local MaxIconData = Library:GetIcon("maximize")
+        local MaximizeBtn = New("TextButton", {
             BackgroundColor3 = "MainColor",
             BackgroundTransparency = 0,
-            Size = UDim2.new(0, 160, 1, 0), -- Mengisi penuh tinggi RightWrapper
+            Size = UDim2.new(0, 32, 1, 0),
+            Text = "",
             Parent = RightWrapper,
-            LayoutOrder = 99 -- Taruh di ujung paling kanan setelah SearchBox
+            LayoutOrder = 99
         })
-        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = ProfileBox }))
-        New("UIStroke", { Color = "OutlineColor", Parent = ProfileBox })
+        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = MaximizeBtn }))
+        New("UIStroke", { Color = "OutlineColor", Parent = MaximizeBtn })
         
+        if MaxIconData then
+            New("ImageLabel", {
+                Image = MaxIconData.Url,
+                ImageColor3 = "FontColor",
+                ImageRectOffset = MaxIconData.ImageRectOffset,
+                ImageRectSize = MaxIconData.ImageRectSize,
+                AnchorPoint = Vector2.new(0.5, 0.5),
+                Position = UDim2.fromScale(0.5, 0.5),
+                Size = UDim2.fromOffset(16, 16),
+                BackgroundTransparency = 1,
+                Parent = MaximizeBtn
+            })
+        end
+
+        local isMaximized = false
+        local prevSize = MainFrame.Size
+        local prevPos = MainFrame.Position
+        
+        MaximizeBtn.MouseButton1Click:Connect(function()
+            if not isMaximized then
+                prevSize = MainFrame.Size
+                prevPos = MainFrame.Position
+                TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                    Size = UDim2.new(1, -20, 1, -20),
+                    Position = UDim2.fromOffset(10, 10)
+                }):Play()
+            else
+                TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                    Size = prevSize,
+                    Position = prevPos
+                }):Play()
+            end
+            isMaximized = not isMaximized
+        end)
+
+        -- Tambahkan Profil User (Hanya Avatar) di Pojok Kiri Bawah Sidebar Compact
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
         local success, avatarUrl = pcall(function()
             return Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
         end)
 
-        local ProfileAvatar = New("ImageLabel", {
+        local SidebarAvatar = New("ImageLabel", {
             BackgroundColor3 = "OutlineColor",
             Image = success and avatarUrl or "",
-            Position = UDim2.new(0, 8, 0.5, 0),
-            AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.fromOffset(24, 24),
-            Parent = ProfileBox,
+            Position = UDim2.new(0, 8, 1, -52), -- Duduk rapi di atas footer
+            Size = UDim2.fromOffset(32, 32),
+            ZIndex = 10,
+            Parent = MainFrame,
         })
-        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ProfileAvatar })
-
-        local ProfileName = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 40, 0.5, -6),
-            AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.new(1, -48, 0, 12),
-            Text = LocalPlayer and LocalPlayer.Name or "User",
-            TextSize = 12,
-            TextColor3 = "FontColor",
-            TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = ProfileBox,
-        })
-
-        local ProfileRole = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Position = UDim2.new(0, 40, 0.5, 6),
-            AnchorPoint = Vector2.new(0, 0.5),
-            Size = UDim2.new(1, -48, 0, 12),
-            Text = "Premium User",
-            TextSize = 10,
-            TextColor3 = "FontColor",
-            TextTransparency = 0.5,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = ProfileBox,
-        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SidebarAvatar })
 
         --// Bottom Bar \\--
         BottomBackground = New("Frame", {
