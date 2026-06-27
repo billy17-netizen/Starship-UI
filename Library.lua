@@ -8454,6 +8454,19 @@ function Library:CreateWindow(WindowInfo)
         -- Tambahkan Profil User (Hanya Avatar) di Pojok Kiri Bawah Sidebar Compact
         local Players = game:GetService("Players")
         local LocalPlayer = Players.LocalPlayer
+        local SidebarProfile = New("Frame", {
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 0, 1, -72),
+            Size = UDim2.new(0, 48, 0, 52),
+            ZIndex = 5,
+            Parent = MainFrame,
+        })
+        Library:MakeLine(SidebarProfile, {
+            AnchorPoint = Vector2.new(0, 0),
+            Position = UDim2.new(0, 0, 0, 0),
+            Size = UDim2.new(1, 0, 0, 1)
+        })
+
         local success, avatarUrl = pcall(function()
             return Players:GetUserThumbnailAsync(LocalPlayer.UserId, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420)
         end)
@@ -8461,12 +8474,13 @@ function Library:CreateWindow(WindowInfo)
         local SidebarAvatar = New("ImageLabel", {
             BackgroundColor3 = "OutlineColor",
             Image = success and avatarUrl or "",
-            Position = UDim2.new(0, 8, 1, -52), -- Duduk rapi di atas footer
+            Position = UDim2.new(0, 8, 0, 10),
             Size = UDim2.fromOffset(32, 32),
             ZIndex = 10,
-            Parent = MainFrame,
+            Parent = SidebarProfile,
         })
-        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = SidebarAvatar })
+        New("UICorner", { CornerRadius = UDim.new(0, 8), Parent = SidebarAvatar })
+        New("UIStroke", { Color = "OutlineColor", Parent = SidebarAvatar })
 
         --// Bottom Bar \\--
         BottomBackground = New("Frame", {
@@ -8546,7 +8560,7 @@ function Library:CreateWindow(WindowInfo)
             CanvasSize = UDim2.fromScale(0, 0),
             Position = UDim2.fromOffset(0, 49),
             ScrollBarThickness = 0,
-            Size = UDim2.new(0, InitialLeftWidth, 1, -70),
+            Size = UDim2.new(0, InitialLeftWidth, 1, -122),
             Parent = MainFrame,
         })
         New("UIListLayout", {
@@ -8694,7 +8708,7 @@ function Library:CreateWindow(WindowInfo)
 
         TitleHolder.Size = UDim2.new(0, Width, 1, 0)
         RightWrapper.Size = UDim2.new(1, -Width - 57 - 1, 1, -16)
-        Tabs.Size = UDim2.new(0, Width, 1, -70)
+        Tabs.Size = UDim2.new(0, Width, 1, -122)
         Container.Size = UDim2.new(1, -Width - 1, 1, -70)
 
         if WindowInfo.EnableCompacting then
