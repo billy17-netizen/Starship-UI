@@ -221,12 +221,12 @@ local Library = {
 
     IsLightTheme = false,
     Scheme = {
-        BackgroundColor = Color3.fromRGB(15, 15, 15),
-        MainColor = Color3.fromRGB(25, 25, 25),
-        AccentColor = Color3.fromRGB(125, 85, 255),
-        OutlineColor = Color3.fromRGB(40, 40, 40),
-        FontColor = Color3.new(1, 1, 1),
-        Font = Font.fromEnum(Enum.Font.Code),
+        BackgroundColor = Color3.fromRGB(18, 18, 20),
+        MainColor = Color3.fromRGB(30, 30, 32),
+        AccentColor = Color3.fromRGB(0, 200, 255),
+        OutlineColor = Color3.fromRGB(45, 45, 48),
+        FontColor = Color3.fromRGB(240, 240, 240),
+        Font = Font.fromEnum(Enum.Font.Gotham),
 
         RedColor = Color3.fromRGB(255, 50, 50),
         DestructiveColor = Color3.fromRGB(220, 38, 38),
@@ -319,10 +319,10 @@ local Templates = {
         Resizable = true,
         SearchbarSize = UDim2.fromScale(1, 1),
         GlobalSearch = false,
-        CornerRadius = 4,
+        CornerRadius = 8,
         NotifySide = "Right",
         ShowCustomCursor = true,
-        Font = Enum.Font.Code,
+        Font = Enum.Font.Gotham,
         ToggleKeybind = Enum.KeyCode.RightControl,
         
         ShowMobileButtons = true,
@@ -8888,7 +8888,7 @@ function Library:CreateWindow(WindowInfo)
 
             do
                 GroupboxHolder = New("Frame", {
-                    BackgroundColor3 = "BackgroundColor",
+                    BackgroundColor3 = "MainColor", -- Berubah menjadi Card Style (Lebih terang dari background)
                     Size = UDim2.fromScale(1, 0),
                     Parent = BoxHolder,
                 })
@@ -8899,7 +8899,14 @@ function Library:CreateWindow(WindowInfo)
                         Parent = GroupboxHolder,
                     })
                 )
-                Library:AddOutline(GroupboxHolder)
+                -- Library:AddOutline(GroupboxHolder) -- Dihapus agar terkesan lebih menyatu tanpa garis kaku
+                
+                -- Opsi: Bisa menambahkan UIStroke khusus jika butuh efek subtle, atau membiarkannya polos
+                New("UIStroke", {
+                    Color = "OutlineColor",
+                    Transparency = 0.5, -- Outline tipis dan halus
+                    Parent = GroupboxHolder,
+                })
 
                 Library:MakeLine(GroupboxHolder, {
                     Position = UDim2.fromOffset(0, 34),
