@@ -34,18 +34,18 @@ local Window = Library:CreateWindow({
 -- Susunan Tab sesuai Mockup
 local Tabs = {
 	-- MAIN
-	Info = Window:AddTab("Info", "info"),
-	Main = Window:AddTab("Main", "swords"),
-	Progression = Window:AddTab("Progression", "star"),
-	ShopSell = Window:AddTab("Shop & Sell", "shopping-cart"),
-	Brew = Window:AddTab("Brew", "flask-conical"),
+	Info = Window:AddTab("Info", "info", "General information and script updates"),
+	Main = Window:AddTab("Main", "swords", "Primary combat and automation features"),
+	Progression = Window:AddTab("Progression", "star", "Leveling and character progression"),
+	ShopSell = Window:AddTab("Shop & Sell", "shopping-cart", "Automated shopping and selling"),
+	Brew = Window:AddTab("Brew", "flask-conical", "Potion brewing automation"),
 	
 	-- EVENTS
-	Event = Window:AddTab("Event", "calendar"),
-	EventBrew = Window:AddTab("Event Brew", "flask-conical"),
+	Event = Window:AddTab("Event", "calendar", "Special event automation"),
+	EventBrew = Window:AddTab("Event Brew", "flask-conical", "Event-specific brewing"),
 	
 	-- SETTINGS
-	Settings = Window:AddTab("Settings", "settings"),
+	Settings = Window:AddTab("Settings", "settings", "UI configuration and script settings"),
 }
 
 
