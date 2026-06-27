@@ -79,7 +79,11 @@ local TabMap = MiningTabbox:AddTab("", "map-pin")
 local TabEye = MiningTabbox:AddTab("", "eye")
 
 TabPickaxe:AddToggle("AutoMine", { Text = "Auto Mine", Default = false })
+    :AddColorPicker("AutoMineColor", { Default = Color3.fromRGB(0, 255, 255) })
+    :AddKeyPicker("AutoMineKey", { Default = "MB2", SyncToggleState = true, Mode = "Toggle" })
+
 TabPickaxe:AddToggle("AutoEquip", { Text = "Auto Equip Pickaxe", Default = true })
+    :AddKeyPicker("AutoEquipKey", { Default = "E", SyncToggleState = true, Mode = "Toggle" })
 
 -- Divider dengan teks di tengah
 TabPickaxe:AddDivider({ Text = "Rock Priority", MarginTop = 8, MarginBottom = 8 })
