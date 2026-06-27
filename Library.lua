@@ -8929,7 +8929,7 @@ function Library:CreateWindow(WindowInfo)
                 GroupboxLabel = New("TextLabel", {
                     BackgroundTransparency = 1,
                     Position = UDim2.fromOffset(BoxIcon and 24 or 0, 0),
-                    Size = UDim2.new(1, 0, 0, 34),
+                    Size = UDim2.new(1, -24, 0, 34),
                     Text = Info.Name,
                     TextSize = 15,
                     TextXAlignment = Enum.TextXAlignment.Left,
@@ -8941,12 +8941,49 @@ function Library:CreateWindow(WindowInfo)
                     Parent = GroupboxLabel,
                 })
 
+                local ChevronIcon = Library:GetIcon("chevron-down")
+                local ChevronButton = New("ImageButton", {
+                    BackgroundTransparency = 1,
+                    Image = ChevronIcon.Url,
+                    ImageColor3 = "FontColor",
+                    ImageRectOffset = ChevronIcon.ImageRectOffset,
+                    ImageRectSize = ChevronIcon.ImageRectSize,
+                    ImageTransparency = 0.5,
+                    AnchorPoint = Vector2.new(1, 0.5),
+                    Position = UDim2.new(1, -12, 0, 17),
+                    Size = UDim2.fromOffset(16, 16),
+                    Parent = GroupboxHolder,
+                })
+
                 GroupboxContainer = New("Frame", {
                     BackgroundTransparency = 1,
                     Position = UDim2.fromOffset(0, 35),
                     Size = UDim2.new(1, 0, 1, -35),
                     Parent = GroupboxHolder,
                 })
+
+                local Collapsed = false
+                local function ToggleCollapse()
+                    Collapsed = not Collapsed
+                    GroupboxContainer.Visible = not Collapsed
+                    
+                    local NewIcon = Collapsed and Library:GetIcon("chevron-up") or Library:GetIcon("chevron-down")
+                    if NewIcon then
+                        ChevronButton.Image = NewIcon.Url
+                        ChevronButton.ImageRectOffset = NewIcon.ImageRectOffset
+                        ChevronButton.ImageRectSize = NewIcon.ImageRectSize
+                    end
+                end
+                
+                ChevronButton.MouseButton1Click:Connect(ToggleCollapse)
+                
+                local HeaderButton = New("TextButton", {
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(1, -24, 0, 34),
+                    Text = "",
+                    Parent = GroupboxHolder,
+                })
+                HeaderButton.MouseButton1Click:Connect(ToggleCollapse)
 
                 GroupboxList = New("UIListLayout", {
                     Padding = UDim.new(0, 8),
@@ -9048,7 +9085,7 @@ function Library:CreateWindow(WindowInfo)
 
             do
                 TabboxHolder = New("Frame", {
-                    BackgroundColor3 = "BackgroundColor",
+                    BackgroundColor3 = "MainColor", -- Berubah menjadi gaya Card Style
                     Size = UDim2.fromScale(1, 0),
                     Parent = BoxHolder,
                 })
@@ -9059,7 +9096,13 @@ function Library:CreateWindow(WindowInfo)
                         Parent = TabboxHolder,
                     })
                 )
-                Library:AddOutline(TabboxHolder)
+                
+                -- Memberikan outline tipis yang elegan
+                New("UIStroke", {
+                    Color = "OutlineColor",
+                    Transparency = 0.5,
+                    Parent = TabboxHolder,
+                })
 
                 TabboxButtons = New("Frame", {
                     BackgroundTransparency = 1,
