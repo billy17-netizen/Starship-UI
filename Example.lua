@@ -2,10 +2,11 @@
 -- example script by https://github.com/mstudio45/LinoriaLib/blob/main/Example.lua and modified by deivid
 -- You can suggest changes with a pull request or something
 
-local repo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/"
-local Library = loadstring(game:HttpGet(repo .. "Library.lua"))()
-local ThemeManager = loadstring(game:HttpGet(repo .. "addons/ThemeManager.lua"))()
-local SaveManager = loadstring(game:HttpGet(repo .. "addons/SaveManager.lua"))()
+-- Kita baca file lokal dari folder workspace executor
+-- Pastikan folder "Obsidian" sudah Anda copy/pindahkan ke folder "workspace" di dalam executor Anda.
+local Library = loadstring(readfile("Obsidian/Library.lua"))()
+local ThemeManager = loadstring(readfile("Obsidian/addons/ThemeManager.lua"))()
+local SaveManager = loadstring(readfile("Obsidian/addons/SaveManager.lua"))()
 
 local Options = Library.Options
 local Toggles = Library.Toggles

@@ -5503,7 +5503,7 @@ do
         if not Info.Compact then
             SliderLabel = New("TextLabel", {
                 BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 0, 14),
+                Size = UDim2.new(1, -100, 0, 14), -- Dikurangi 100 agar tidak menabrak angka
                 Text = Slider.Text,
                 TextSize = 14,
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -5511,34 +5511,28 @@ do
             })
         end
 
+        local DisplayLabel = New("TextLabel", {
+            BackgroundTransparency = 1,
+            AnchorPoint = Vector2.new(1, 0),
+            Position = UDim2.fromScale(1, 0),
+            Size = UDim2.new(0, 100, 0, 14),
+            Text = "",
+            TextSize = 14,
+            TextXAlignment = Enum.TextXAlignment.Right,
+            TextColor3 = "FontColor",
+            TextTransparency = 0.4,
+            ZIndex = 2,
+            Parent = Holder,
+        })
+
         local Bar = New("TextButton", {
             Active = not Slider.Disabled,
             AnchorPoint = Vector2.new(0, 1),
             BackgroundColor3 = "MainColor",
-            Position = UDim2.fromScale(0, 1),
-            Size = UDim2.new(1, 0, 0, 15),
+            Position = UDim2.new(0, 0, 1, -4),
+            Size = UDim2.new(1, 0, 0, 4), -- Bar tipis
             Text = "",
             Parent = Holder,
-        })
-
-        New("UIStroke", {
-            Color = "OutlineColor",
-            Parent = Bar,
-        })
-
-        local DisplayLabel = New("TextLabel", {
-            BackgroundTransparency = 1,
-            Size = UDim2.fromScale(1, 1),
-            Text = "",
-            TextSize = 14,
-            ZIndex = 2,
-            Parent = Bar,
-        })
-        New("UIStroke", {
-            ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
-            Color = "DarkColor",
-            LineJoinMode = Enum.LineJoinMode.Miter,
-            Parent = DisplayLabel,
         })
 
         local InputTextBox
@@ -5551,13 +5545,7 @@ do
                 ZIndex = 3,
                 Visible = false,
                 ClearTextOnFocus = false,
-                Parent = Bar,
-            })
-            New("UIStroke", {
-                ApplyStrokeMode = Enum.ApplyStrokeMode.Contextual,
-                Color = "DarkColor",
-                LineJoinMode = Enum.LineJoinMode.Miter,
-                Parent = InputTextBox,
+                Parent = DisplayLabel, -- Dipindah ke DisplayLabel
             })
         end
 
@@ -5567,21 +5555,17 @@ do
             Parent = Bar,
         })
 
-        table.insert(
-            Library.Corners,
-            New("UICorner", {
-                CornerRadius = UDim.new(0, Library.CornerRadius / 2),
-                Parent = Bar,
-            })
-        )
+        local Thumb = New("Frame", {
+            AnchorPoint = Vector2.new(0.5, 0.5),
+            BackgroundColor3 = "FontColor",
+            Position = UDim2.new(0.5, 0, 0.5, 0),
+            Size = UDim2.fromOffset(12, 12),
+            Parent = Bar,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Thumb })
 
-        table.insert(
-            Library.Corners,
-            New("UICorner", {
-                CornerRadius = UDim.new(0, Library.CornerRadius / 2),
-                Parent = Fill,
-            })
-        )
+        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Bar }))
+        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = Fill }))
 
         function Slider:UpdateColors()
             if Library.Unloaded then
@@ -5634,6 +5618,7 @@ do
 
             local X = (Slider.Value - Slider.Min) / (Slider.Max - Slider.Min)
             Fill.Size = UDim2.fromScale(X, 1)
+            Thumb.Position = UDim2.new(X, 0, 0.5, 0)
         end
 
         function Slider:OnChanged(Func)
@@ -8002,11 +7987,52 @@ function Library:CreateWindow(WindowInfo)
         })
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
-            HorizontalAlignment = Enum.HorizontalAlignment.Center,
+            HorizontalAlignment = Enum.HorizontalAlignment.Left, -- Diubah ke kiri agar menempel seperti macOS
             VerticalAlignment = Enum.VerticalAlignment.Center,
-            Padding = UDim.new(0, 6),
+            Padding = UDim.new(0, 8),
             Parent = TitleHolder,
         })
+        New("UIPadding", {
+            PaddingLeft = UDim.new(0, 16),
+            Parent = TitleHolder,
+        })
+
+        --// MacOS Traffic Light Dots \\--
+        local MacDots = New("Frame", {
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0, 48, 0, 12),
+            Parent = TitleHolder,
+        })
+        New("UIListLayout", {
+            FillDirection = Enum.FillDirection.Horizontal,
+            VerticalAlignment = Enum.VerticalAlignment.Center,
+            Padding = UDim.new(0, 6),
+            Parent = MacDots,
+        })
+        
+        -- Dot Merah (Close)
+        local DotRed = New("Frame", {
+            BackgroundColor3 = Color3.fromRGB(255, 95, 86),
+            Size = UDim2.fromOffset(12, 12),
+            Parent = MacDots,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotRed })
+        
+        -- Dot Kuning (Minimize)
+        local DotYellow = New("Frame", {
+            BackgroundColor3 = Color3.fromRGB(255, 189, 46),
+            Size = UDim2.fromOffset(12, 12),
+            Parent = MacDots,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotYellow })
+        
+        -- Dot Hijau (Maximize)
+        local DotGreen = New("Frame", {
+            BackgroundColor3 = Color3.fromRGB(39, 201, 63),
+            Size = UDim2.fromOffset(12, 12),
+            Parent = MacDots,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotGreen })
 
         if WindowInfo.Icon then
             local Icon = Library:GetCustomIcon(WindowInfo.Icon)
@@ -8167,6 +8193,65 @@ function Library:CreateWindow(WindowInfo)
             })
         end
 
+        --// Custom Layout Restructuring (Mac-style) \\--
+        
+        -- Pindahkan Title & Icon ke Header Kanan
+        WindowIcon.Parent = RightWrapper
+        WindowTitle.Parent = RightWrapper
+
+        -- Pindahkan SearchBox ke Sidebar Kiri (bawah titik macOS)
+        SearchBox.Parent = MainFrame
+        SearchBox.Size = UDim2.new(0, InitialLeftWidth - 24, 0, 32)
+        SearchBox.Position = UDim2.fromOffset(12, 49)
+        SearchBox.AnchorPoint = Vector2.zero
+
+        -- Tambahkan Profil User di bawah Sidebar Kiri
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+
+        local ProfileBox = New("Frame", {
+            BackgroundColor3 = "MainColor",
+            Position = UDim2.new(0, 12, 1, -20 - WindowInfo.CornerRadius - 48),
+            Size = UDim2.new(0, InitialLeftWidth - 24, 0, 48),
+            Parent = MainFrame,
+        })
+        table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = ProfileBox }))
+        New("UIStroke", { Color = "OutlineColor", Parent = ProfileBox })
+
+        local ProfileAvatar = New("ImageLabel", {
+            BackgroundColor3 = "OutlineColor",
+            Position = UDim2.new(0, 8, 0.5, 0),
+            AnchorPoint = Vector2.new(0, 0.5),
+            Size = UDim2.fromOffset(32, 32),
+            Parent = ProfileBox,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ProfileAvatar })
+
+        local ProfileName = New("TextLabel", {
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 48, 0.5, -8),
+            AnchorPoint = Vector2.new(0, 0.5),
+            Size = UDim2.new(1, -56, 0, 16),
+            Text = LocalPlayer and LocalPlayer.Name or "User",
+            TextSize = 14,
+            TextColor3 = "FontColor",
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = ProfileBox,
+        })
+
+        local ProfileRole = New("TextLabel", {
+            BackgroundTransparency = 1,
+            Position = UDim2.new(0, 48, 0.5, 8),
+            AnchorPoint = Vector2.new(0, 0.5),
+            Size = UDim2.new(1, -56, 0, 16),
+            Text = "Premium User",
+            TextSize = 12,
+            TextColor3 = "FontColor",
+            TextTransparency = 0.5,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = ProfileBox,
+        })
+
         --// Bottom Bar \\--
         BottomBackground = New("Frame", {
             AnchorPoint = Vector2.new(0, 1),
@@ -8243,9 +8328,9 @@ function Library:CreateWindow(WindowInfo)
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             BackgroundColor3 = "BackgroundColor",
             CanvasSize = UDim2.fromScale(0, 0),
-            Position = UDim2.fromOffset(0, 49),
+            Position = UDim2.fromOffset(0, 49 + 32 + 12), -- Digeser ke bawah SearchBox
             ScrollBarThickness = 0,
-            Size = UDim2.new(0, InitialLeftWidth, 1, -70),
+            Size = UDim2.new(0, InitialLeftWidth, 1, -70 - 32 - 12 - 48 - 12), -- Dikurangi tinggi searchbox & profil
             Parent = MainFrame,
         })
         New("UIListLayout", {
