@@ -48,6 +48,16 @@ local Tabs = {
 	Settings = Window:AddTab("Settings", "settings"),
 }
 
+local UIConfig = Tabs.Settings:AddLeftGroupbox("UI Configuration")
+UIConfig:AddToggle("UIGlowToggle", {
+    Text = "Enable UI Glow",
+    Default = true,
+    Tooltip = "Menyalakan efek cahaya di belakang window utama",
+    Callback = function(Value)
+        Window:SetGlow(Value)
+    end
+})
+
 
 --[[
 Example of how to add a warning box to a tab; the title AND text support rich text formatting.

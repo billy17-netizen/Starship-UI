@@ -324,6 +324,7 @@ local Templates = {
         ShowCustomCursor = true,
         Font = Enum.Font.Gotham,
         ToggleKeybind = Enum.KeyCode.RightControl,
+        EnableGlow = true,
         
         ShowMobileButtons = true,
         MobileButtonsSide = "Left",
@@ -10761,6 +10762,39 @@ function Library:CreateWindow(WindowInfo)
     Library:GiveSignal(UserInputService.WindowFocusReleased:Connect(function()
         Library.IsRobloxFocused = false
     end))
+
+    --// UI Glow \\--
+    local UIGlow = New("ImageLabel", {
+        Name = "UIGlow",
+        BackgroundTransparency = 1,
+        Image = "rbxassetid://4731308655",
+        ImageColor3 = Library.Scheme.AccentColor,
+        ImageTransparency = 0.5,
+        ScaleType = Enum.ScaleType.Slice,
+        SliceCenter = Rect.new(30, 30, 70, 70),
+        ZIndex = 0,
+        Visible = false,
+        Parent = ScreenGui
+    })
+    Library.Registry[UIGlow] = { ImageColor3 = "AccentColor" }
+
+    local function SyncGlow()
+        UIGlow.Size = UDim2.new(0, MainFrame.AbsoluteSize.X + 60, 0, MainFrame.AbsoluteSize.Y + 60)
+        UIGlow.Position = UDim2.new(0, MainFrame.AbsolutePosition.X - 30, 0, MainFrame.AbsolutePosition.Y - 30)
+    end
+    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("AbsolutePosition"):Connect(SyncGlow))
+    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(SyncGlow))
+    SyncGlow()
+    
+    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+        UIGlow.Visible = WindowInfo.EnableGlow and MainFrame.Visible or false
+    end))
+    UIGlow.Visible = WindowInfo.EnableGlow and MainFrame.Visible or false
+    
+    function Window:SetGlow(State)
+        WindowInfo.EnableGlow = State
+        UIGlow.Visible = State and MainFrame.Visible or false
+    end
 
     return Window
 end
