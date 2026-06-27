@@ -9119,7 +9119,6 @@ function Library:CreateWindow(WindowInfo)
             do
                 GroupboxHolder = New("Frame", {
                     BackgroundColor3 = "MainColor", 
-                    AutomaticSize = Enum.AutomaticSize.Y, -- Gunakan auto size
                     Size = UDim2.fromScale(1, 0),
                     Parent = BoxHolder,
                 })
@@ -9188,9 +9187,8 @@ function Library:CreateWindow(WindowInfo)
 
                 GroupboxContainer = New("Frame", {
                     BackgroundTransparency = 1,
-                    AutomaticSize = Enum.AutomaticSize.Y, -- PENTING: Agar ukurannya merenggang otomatis mengikuti isinya (seperti Tabbox)
                     Position = UDim2.fromOffset(0, 35),
-                    Size = UDim2.new(1, 0, 0, 0),
+                    Size = UDim2.new(1, 0, 1, -35),
                     Parent = GroupboxHolder,
                 })
 
@@ -9244,7 +9242,13 @@ function Library:CreateWindow(WindowInfo)
             }
 
             function Groupbox:Resize()
-                -- Kosong karena sekarang menggunakan AutomaticSize murni
+                if Collapsed then
+                    GroupboxHolder.Size = UDim2.new(1, 0, 0, 34)
+                else
+                    task.defer(function()
+                        GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
+                    end)
+                end
             end
 
             ToggleCollapseCallback = function()
