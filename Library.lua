@@ -10767,11 +10767,11 @@ function Library:CreateWindow(WindowInfo)
     local UIGlow = New("ImageLabel", {
         Name = "UIGlow",
         BackgroundTransparency = 1,
-        Image = "rbxassetid://4731308655",
+        Image = "rbxassetid://1316045217",
         ImageColor3 = Library.Scheme.AccentColor,
         ImageTransparency = 0,
         ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(28, 28, 228, 228),
+        SliceCenter = Rect.new(10, 10, 118, 118),
         ZIndex = 0,
         Visible = false,
         Parent = ScreenGui
@@ -10779,15 +10779,16 @@ function Library:CreateWindow(WindowInfo)
     Library.Registry[UIGlow] = { ImageColor3 = "AccentColor" }
 
     local function SyncGlow()
-        -- Offset harus PERSIS SAMA dengan SliceCenter (28px) agar menempel tanpa celah!
-        -- Karena tepi blur dari gambar ini tepat 28 pixel.
+        -- Asset 1316045217 adalah solid blurred circle dengan margin blur persis 10 pixel.
+        -- Offset 10px akan mengeluarkan HANYA bagian blur ke luar window, 
+        -- sehingga menempel sempurna tanpa ada garis pinggir buatan/hollow gap.
         UIGlow.Size = UDim2.new(
-            MainFrame.Size.X.Scale, MainFrame.Size.X.Offset + 56,
-            MainFrame.Size.Y.Scale, MainFrame.Size.Y.Offset + 56
+            MainFrame.Size.X.Scale, MainFrame.Size.X.Offset + 20,
+            MainFrame.Size.Y.Scale, MainFrame.Size.Y.Offset + 20
         )
         UIGlow.Position = UDim2.new(
-            MainFrame.Position.X.Scale, MainFrame.Position.X.Offset - 28,
-            MainFrame.Position.Y.Scale, MainFrame.Position.Y.Offset - 28
+            MainFrame.Position.X.Scale, MainFrame.Position.X.Offset - 10,
+            MainFrame.Position.Y.Scale, MainFrame.Position.Y.Offset - 10
         )
     end
     Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Position"):Connect(SyncGlow))
