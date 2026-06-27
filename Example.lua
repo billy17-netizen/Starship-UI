@@ -684,24 +684,7 @@ Library:OnUnload(function()
 	print("Unloaded!")
 end)
 
--- Anything we can do in a Groupbox, we can do in a Key tab (AddToggle, AddSlider, AddLabel, etc etc...)
-Tabs.Key:AddLabel({
-	Text = "Key: Banana",
-	DoesWrap = true,
-	Size = 16,
-})
 
-Tabs.Key:AddKeyBox(function(ReceivedKey)
-	-- KeyBox only takes the callback for the button, you need to implement your own key check inside the callback
-	local Success = ReceivedKey == "Banana"
-
-	print("Expected Key: Banana - Received Key:", ReceivedKey, "| Success:", Success)
-	Library:Notify({
-		Title = "Expected Key: Banana",
-		Description = "Received Key: " .. ReceivedKey .. "\nSuccess: " .. tostring(Success),
-		Time = 4,
-	})
-end)
 
 -- DraggableLabel
 
