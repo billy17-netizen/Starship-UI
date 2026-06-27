@@ -8249,28 +8249,61 @@ function Library:CreateWindow(WindowInfo)
         })
         
         -- Dot Merah (Close)
-        local DotRed = New("Frame", {
+        local DotRed = New("TextButton", {
             BackgroundColor3 = Color3.fromRGB(255, 95, 86),
             Size = UDim2.fromOffset(12, 12),
+            Text = "",
             Parent = MacDots,
         })
         New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotRed })
+        DotRed.MouseButton1Click:Connect(function()
+            Library:Unload()
+        end)
         
         -- Dot Kuning (Minimize)
-        local DotYellow = New("Frame", {
+        local DotYellow = New("TextButton", {
             BackgroundColor3 = Color3.fromRGB(255, 189, 46),
             Size = UDim2.fromOffset(12, 12),
+            Text = "",
             Parent = MacDots,
         })
         New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotYellow })
+        DotYellow.MouseButton1Click:Connect(function()
+            Library:Toggle()
+        end)
         
         -- Dot Hijau (Maximize)
-        local DotGreen = New("Frame", {
+        local DotGreen = New("TextButton", {
             BackgroundColor3 = Color3.fromRGB(39, 201, 63),
             Size = UDim2.fromOffset(12, 12),
+            Text = "",
             Parent = MacDots,
         })
         New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = DotGreen })
+        
+        local isMaximized = false
+        local prevSize = MainFrame.Size
+        local prevPos = MainFrame.Position
+        
+        DotGreen.MouseButton1Click:Connect(function()
+            if not isMaximized then
+                prevSize = MainFrame.Size
+                prevPos = MainFrame.Position
+                
+                -- Animasi maximize
+                TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                    Size = UDim2.new(1, -20, 1, -20),
+                    Position = UDim2.fromOffset(10, 10)
+                }):Play()
+            else
+                -- Animasi restore
+                TweenService:Create(MainFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                    Size = prevSize,
+                    Position = prevPos
+                }):Play()
+            end
+            isMaximized = not isMaximized
+        end)
 
         if WindowInfo.Icon then
             local Icon = Library:GetCustomIcon(WindowInfo.Icon)
