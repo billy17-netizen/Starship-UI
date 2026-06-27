@@ -10764,45 +10764,21 @@ function Library:CreateWindow(WindowInfo)
     end))
 
     --// UI Glow \\--
-    local UIGlow = New("ImageLabel", {
-        Name = "UIGlow",
-        BackgroundTransparency = 1,
-        Image = "rbxassetid://1316045217",
-        ImageColor3 = Library.Scheme.AccentColor,
-        ImageTransparency = 0,
-        ScaleType = Enum.ScaleType.Slice,
-        SliceCenter = Rect.new(10, 10, 118, 118),
-        ZIndex = 0,
-        Visible = false,
-        Parent = ScreenGui
+    --// UI Glow (Outline Glow) \\--
+    local GlowStroke = New("UIStroke", {
+        Name = "GlowStroke",
+        Color = "AccentColor",
+        Thickness = 2,
+        Transparency = 0.1,
+        ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+        Enabled = WindowInfo.EnableGlow,
+        Parent = MainFrame,
     })
-    Library.Registry[UIGlow] = { ImageColor3 = "AccentColor" }
-
-    local function SyncGlow()
-        -- Asset 1316045217 adalah solid blurred circle dengan margin blur persis 10 pixel.
-        -- Offset 10px akan mengeluarkan HANYA bagian blur ke luar window, 
-        -- sehingga menempel sempurna tanpa ada garis pinggir buatan/hollow gap.
-        UIGlow.Size = UDim2.new(
-            MainFrame.Size.X.Scale, MainFrame.Size.X.Offset + 20,
-            MainFrame.Size.Y.Scale, MainFrame.Size.Y.Offset + 20
-        )
-        UIGlow.Position = UDim2.new(
-            MainFrame.Position.X.Scale, MainFrame.Position.X.Offset - 10,
-            MainFrame.Position.Y.Scale, MainFrame.Position.Y.Offset - 10
-        )
-    end
-    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Position"):Connect(SyncGlow))
-    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Size"):Connect(SyncGlow))
-    SyncGlow()
-    
-    Library:GiveSignal(MainFrame:GetPropertyChangedSignal("Visible"):Connect(function()
-        UIGlow.Visible = WindowInfo.EnableGlow and MainFrame.Visible or false
-    end))
-    UIGlow.Visible = WindowInfo.EnableGlow and MainFrame.Visible or false
+    Library.Registry[GlowStroke] = { Color = "AccentColor" }
     
     function Window:SetGlow(State)
         WindowInfo.EnableGlow = State
-        UIGlow.Visible = State and MainFrame.Visible or false
+        GlowStroke.Enabled = State
     end
 
     return Window
