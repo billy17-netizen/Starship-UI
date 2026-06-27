@@ -8477,8 +8477,8 @@ function Library:CreateWindow(WindowInfo)
         if Library.Registry[SearchBox] then
             Library.Registry[SearchBox].BackgroundColor3 = "MainColor"
         end
-        SearchBox.Size = UDim2.new(0, InitialLeftWidth - 24, 0, 32)
-        SearchBox.Position = UDim2.fromOffset(12, 49)
+        SearchBox.Size = UDim2.new(0, InitialLeftWidth - 28, 0, 28)
+        SearchBox.Position = UDim2.fromOffset(14, 49)
         SearchBox.AnchorPoint = Vector2.zero
         
         -- Perbaiki tata letak icon dan padding tanpa menghapus outline
@@ -8503,8 +8503,8 @@ function Library:CreateWindow(WindowInfo)
         local ProfileBox = New("Frame", {
             BackgroundColor3 = "MainColor",
             BackgroundTransparency = 0,
-            Position = UDim2.new(0, 12, 1, -20 - WindowInfo.CornerRadius - 48),
-            Size = UDim2.new(0, InitialLeftWidth - 24, 0, 48),
+            Position = UDim2.new(0, 14, 1, -20 - WindowInfo.CornerRadius - 48),
+            Size = UDim2.new(0, InitialLeftWidth - 28, 0, 48),
             Parent = MainFrame,
         })
         table.insert(Library.Corners, New("UICorner", { CornerRadius = UDim.new(0, WindowInfo.CornerRadius), Parent = ProfileBox }))
@@ -8625,9 +8625,9 @@ function Library:CreateWindow(WindowInfo)
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             BackgroundColor3 = "BackgroundColor",
             CanvasSize = UDim2.fromScale(0, 0),
-            Position = UDim2.fromOffset(0, 49 + 32 + 12), -- Digeser ke bawah SearchBox
+            Position = UDim2.fromOffset(0, 49 + 28 + 14), -- Posisi di bawah SearchBox yang sudah disesuaikan
             ScrollBarThickness = 0,
-            Size = UDim2.new(0, InitialLeftWidth, 1, -70 - 32 - 12 - 48 - 12), -- Dikurangi tinggi searchbox & profil
+            Size = UDim2.new(0, InitialLeftWidth, 1, -70 - 28 - 14 - 48 - 14),
             Parent = MainFrame,
         })
         New("UIListLayout", {
