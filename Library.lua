@@ -10776,9 +10776,33 @@ function Library:CreateWindow(WindowInfo)
     })
     Library.Registry[GlowStroke] = { Color = "AccentColor" }
     
-    function Window:SetGlow(State)
+    function Window:StartGlowingAuraAroundTheParameterOfTheWindow(State, Properties)
+        Properties = Properties or {}
+        local Color = Properties.color or Properties.Color
+        local Transp = Properties.transparency or Properties.Transparency
+        local Thick = Properties.thickness or Properties.Thickness
+
+        if Transp == nil then Transp = 1 end
+        if Thick == nil then Thick = 1 end
+
         WindowInfo.EnableGlow = State
         GlowStroke.Enabled = State
+        
+        if Color then
+            if typeof(Color) == "string" and Library.Scheme[Color] then
+                GlowStroke.Color = Library.Scheme[Color]
+                Library.Registry[GlowStroke] = { Color = Color }
+            elseif typeof(Color) == "Color3" then
+                GlowStroke.Color = Color
+                Library.Registry[GlowStroke] = nil
+            end
+        else
+            GlowStroke.Color = Library.Scheme.AccentColor
+            Library.Registry[GlowStroke] = { Color = "AccentColor" }
+        end
+        
+        GlowStroke.Transparency = Transp
+        GlowStroke.Thickness = Thick
     end
 
     return Window

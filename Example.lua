@@ -54,7 +54,11 @@ UIConfig:AddToggle("UIGlowToggle", {
     Default = true,
     Tooltip = "Menyalakan efek cahaya di belakang window utama",
     Callback = function(Value)
-        Window:SetGlow(Value)
+        Window:StartGlowingAuraAroundTheParameterOfTheWindow(Value, {
+            color = "AccentColor",
+            transparency = 0.1,
+            thickness = 2
+        })
     end
 })
 
