@@ -7620,9 +7620,17 @@ do
                 PaddingTop = UDim.new(0, 7),
                 Parent = DepGroupboxContainer,
             })
+            
+            local DepGroupbox
+            
+            DepGroupboxList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+                if DepGroupbox and DepGroupbox.Visible then
+                    DepGroupboxContainer.Size = UDim2.new(1, 0, 0, (DepGroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 18)
+                end
+            end)
         end
 
-        local DepGroupbox = {
+        DepGroupbox = {
             Connections = {},
             Destroyed = false,
 
@@ -9220,6 +9228,13 @@ function Library:CreateWindow(WindowInfo)
                     Padding = UDim.new(0, 8),
                     Parent = GroupboxContainer,
                 })
+                
+                GroupboxList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+                    if not Collapsed then
+                        GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
+                    end
+                end)
+                
                 New("UIPadding", {
                     PaddingBottom = UDim.new(0, 7),
                     PaddingLeft = UDim.new(0, 7),
@@ -9246,9 +9261,7 @@ function Library:CreateWindow(WindowInfo)
                 if Collapsed then
                     GroupboxHolder.Size = UDim2.new(1, 0, 0, 34)
                 else
-                    task.defer(function()
-                        GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
-                    end)
+                    GroupboxHolder.Size = UDim2.new(1, 0, 0, (GroupboxList.AbsoluteContentSize.Y / Library.DPIScale) + 49)
                 end
             end
 
@@ -9465,6 +9478,13 @@ function Library:CreateWindow(WindowInfo)
                     Padding = UDim.new(0, 8),
                     Parent = Container,
                 })
+                
+                List:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+                    if Tabbox.ActiveTab == Tab then
+                        TabboxHolder.Size = UDim2.new(1, 0, 0, (List.AbsoluteContentSize.Y / Library.DPIScale) + 49)
+                    end
+                end)
+
                 New("UIPadding", {
                     PaddingBottom = UDim.new(0, 7),
                     PaddingLeft = UDim.new(0, 7),
