@@ -9124,8 +9124,6 @@ function Library:CreateWindow(WindowInfo)
 
             local GroupboxContainer
             local GroupboxList
-
-            do
                 GroupboxHolder = New("Frame", {
                     BackgroundColor3 = "MainColor", 
                     Size = UDim2.fromScale(1, 0),
@@ -9242,7 +9240,6 @@ function Library:CreateWindow(WindowInfo)
                     PaddingTop = UDim.new(0, 7),
                     Parent = GroupboxContainer,
                 })
-            end
 
             local Groupbox = {
                 Connections = {},
